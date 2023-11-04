@@ -26,7 +26,7 @@ export default function Home() {
         RSC + tRPC (No server actions)
       </Link>
       <Link
-        href="/"
+        href="/rsc-trpc-action"
         className="text-xl text-blue-300 underline hover:text-blue-500"
       >
         RSC + tRPC + Server Actions
