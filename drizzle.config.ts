@@ -1,12 +1,11 @@
 import { type Config } from "drizzle-kit";
-
-import { env } from "~/env.mjs";
+import "better-sqlite3";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "mysql2",
+  driver: "better-sqlite",
   dbCredentials: {
-    connectionString: env.DATABASE_URL,
+    url: "sqlite.db",
   },
   tablesFilter: ["four-mutations_*"],
 } satisfies Config;
