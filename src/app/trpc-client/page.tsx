@@ -4,7 +4,7 @@ import { DeleteButton } from "./_components/delete-post";
 import { CreatePost } from "./_components/create-post";
 
 export default async function Home() {
-  const posts = await api.post.getPosts.query();
+  const posts = await api.post.getPosts();
 
   return (
     <div className="container flex max-w-2xl flex-col gap-24 px-4 py-16">
@@ -26,7 +26,7 @@ export default async function Home() {
 }
 
 type PostType = NonNullable<
-  inferAsyncReturnType<typeof api.post.getPosts.query>
+  inferAsyncReturnType<typeof api.post.getPosts>
 >[number];
 
 function PostView({ post }: { post: PostType }) {
