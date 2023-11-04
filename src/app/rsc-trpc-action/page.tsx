@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { api } from "~/trpc/server";
 
 export default async function Home() {
-  const posts = await api.post.getPosts.query();
+  const posts = await api.post.getPosts();
 
   return (
     <div className="container flex max-w-2xl flex-col gap-24 px-4 py-16">
@@ -23,14 +23,14 @@ export default async function Home() {
 }
 
 type PostType = NonNullable<
-  inferAsyncReturnType<typeof api.post.getPosts.query>
+  inferAsyncReturnType<typeof api.post.getPosts>
 >[number];
 
 function PostView({ post }: { post: PostType }) {
   async function deletePostAction() {
     "use server";
 
-    await api.post.delete.mutate({ id: post.id }); // Delete post from DB
+    await api.post.delete({ id: post.id }); // Delete post from DB
     revalidatePath("/rsc-trpc-action"); // Revalidate page to see changed content
   }
 
@@ -56,7 +56,7 @@ function CreatePost() {
     "use server";
 
     const name = formData.get("post-name") as string; // Get name from formData
-    await api.post.create.mutate({ name: name }); // Insert into DB
+    await api.post.create({ name: name }); // Insert into DB
     revalidatePath("/vanilla-action"); // Revalidate page to see new content
   }
 
