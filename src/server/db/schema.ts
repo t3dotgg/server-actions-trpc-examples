@@ -1,3 +1,5 @@
+import "server-only"; // Make sure you can't import this on client
+
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
