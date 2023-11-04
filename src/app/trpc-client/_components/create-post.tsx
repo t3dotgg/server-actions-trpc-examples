@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { api } from "~/trpc/react";
 
+// Traditional client-side form submission
 export function CreatePost() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -28,6 +29,7 @@ export function CreatePost() {
         type="text"
         placeholder="Title"
         value={name}
+        // I'm too lazy to fix the types on this
         onChange={(e) => setName(e.target.value)}
         className="w-full rounded-full px-4 py-2 text-black"
       />

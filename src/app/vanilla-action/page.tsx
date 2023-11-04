@@ -32,11 +32,8 @@ function PostView({ post }: { post: PostType }) {
   async function deletePostAction() {
     "use server";
 
-    // Delete post from DB
-    await db.delete(posts).where(eq(posts.id, post.id));
-
-    // Revalidate page to see changed content
-    revalidatePath("/vanilla-action");
+    await db.delete(posts).where(eq(posts.id, post.id)); // Delete post from DB
+    revalidatePath("/vanilla-action"); // Revalidate page to see changed content
   }
 
   return (
@@ -59,16 +56,10 @@ function PostView({ post }: { post: PostType }) {
 function CreatePost() {
   async function createPostAction(formData: FormData) {
     "use server";
-    // Get name from formData
-    const name = formData.get("post-name") as string;
 
-    // Insert into DB
-    await db.insert(posts).values({ name });
-
-    // Revalidate page to see new content
-    revalidatePath("/vanilla-action");
-
-    // NOTE: This will NOT wipe the form data since no navigation occurred
+    const name = formData.get("post-name") as string; // Get name from formData
+    await db.insert(posts).values({ name }); // Insert into DB
+    revalidatePath("/vanilla-action"); // Revalidate page to see new content
   }
 
   return (

@@ -1,34 +1,40 @@
-import { CreatePost } from "~/app/trpc-client/_components/create-post";
 import { api } from "~/trpc/server";
+import type { inferAsyncReturnType } from "@trpc/server";
+import { DeleteButton } from "./_components/delete-post";
+import { CreatePost } from "./_components/create-post";
 
 export default async function Home() {
-  const hello = await api.post.hello.query({ text: "from tRPC" });
+  const posts = await api.post.getPosts.query();
 
   return (
-    <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-2xl text-white">
-          {hello ? hello.greeting : "Loading tRPC query..."}
-        </p>
+    <div className="container flex max-w-2xl flex-col gap-24 px-4 py-16">
+      <div className="flex flex-col text-xl">
+        <h1 className="text-2xl font-bold">Posts</h1>
+        {posts.map((post) => (
+          <PostView post={post} key={post.id} />
+        ))}
       </div>
 
-      <CrudShowcase />
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold">Create a new post</h1>
+
+        {/* Note: CreatePost HAS to be imported, since it's using client side JS */}
+        <CreatePost />
+      </div>
     </div>
   );
 }
 
-async function CrudShowcase() {
-  const latestPost = await api.post.getLatest.query();
+type PostType = NonNullable<
+  inferAsyncReturnType<typeof api.post.getPosts.query>
+>[number];
 
+function PostView({ post }: { post: PostType }) {
   return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
+    <div className="flex justify-between p-2 hover:bg-gray-800/80">
+      {post.name}
+      {/* Note: DeleteButton HAS to be imported, since it's using client side JS */}
+      <DeleteButton id={post.id} />
     </div>
   );
 }
