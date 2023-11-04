@@ -2,6 +2,7 @@ import { db } from "~/server/db";
 import type { inferAsyncReturnType } from "@trpc/server";
 import { posts } from "~/server/db/schema";
 import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
 
 export default async function Home() {
   const posts = await db.query.posts.findMany();
@@ -28,7 +29,31 @@ type PostType = NonNullable<
 >;
 
 function PostView({ post }: { post: PostType }) {
-  return <div>{post.name}</div>;
+  async function deletePostAction() {
+    "use server";
+
+    // Delete post from DB
+    await db.delete(posts).where(eq(posts.id, post.id));
+
+    // Revalidate page to see changed content
+    revalidatePath("/vanilla-action");
+  }
+
+  return (
+    <div className="flex justify-between p-2 hover:bg-gray-800/80">
+      {post.name}
+
+      {/* Note: For actions to work, they have to be IN a form. The action itself can be bound at either via form action={thing} OR button formAction={thing} */}
+      <form>
+        <button
+          formAction={deletePostAction}
+          className="border p-2 font-bold text-red-300"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  );
 }
 
 function CreatePost() {
