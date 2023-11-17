@@ -57,7 +57,7 @@ function CreatePost() {
 
     const name = formData.get("post-name") as string; // Get name from formData
     await api.post.create({ name: name }); // Insert into DB
-    revalidatePath("/vanilla-action"); // Revalidate page to see new content
+    revalidatePath("/rsc-trpc-action"); // Revalidate page to see new content
   }
 
   return (
