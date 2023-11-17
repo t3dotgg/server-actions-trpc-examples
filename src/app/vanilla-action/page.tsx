@@ -29,10 +29,11 @@ type PostType = NonNullable<
 >;
 
 function PostView({ post }: { post: PostType }) {
+  const { id } = post;
   async function deletePostAction() {
     "use server";
 
-    await db.delete(posts).where(eq(posts.id, post.id)); // Delete post from DB
+    await db.delete(posts).where(eq(posts.id, id)); // Delete post from DB
     revalidatePath("/vanilla-action"); // Revalidate page to see changed content
   }
 
