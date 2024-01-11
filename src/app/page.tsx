@@ -31,6 +31,12 @@ export default function Home() {
       >
         RSC + tRPC + Server Actions
       </Link>
+      <Link
+        href="/client-side-actions"
+        className="text-xl text-blue-300 underline hover:text-blue-500"
+      >
+        RSC + tRPC + (Client side) Server Actions
+      </Link>
     </div>
   );
 }
